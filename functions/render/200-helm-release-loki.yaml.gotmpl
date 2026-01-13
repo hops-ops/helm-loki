@@ -1,0 +1,60 @@
+# code: language=yaml
+#
+# Helm release for loki
+#
+
+{{- $lk := $state.loki }}
+
+---
+apiVersion: helm.m.crossplane.io/v1beta1
+kind: Release
+metadata:
+  name: {{ $lk.releaseName }}
+  annotations:
+    {{ setResourceNameAnnotation "helm-release-loki" }}
+  labels: {{ $lk.labels | toJson }}
+spec:
+  managementPolicies: {{ $lk.managementPolicies | toJson }}
+  forProvider:
+    chart:
+      name: loki
+      repository: https://grafana.github.io/helm-charts
+      version: 6.24.0
+    namespace: {{ $lk.namespace }}
+    {{- if $lk.overrideAllValues }}
+    values:
+      {{- toYaml $lk.overrideAllValues | nindent 6 }}
+    {{- else }}
+    values:
+      fullnameOverride: loki
+      nameOverride: loki
+      loki:
+        commonConfig:
+          replication_factor: 1
+        storage:
+          type: filesystem
+        schemaConfig:
+          configs:
+            - from: "2024-04-01"
+              store: tsdb
+              object_store: filesystem
+              schema: v13
+              index:
+                prefix: index_
+                period: 24h
+      singleBinary:
+        replicas: 1
+      read:
+        replicas: 0
+      write:
+        replicas: 0
+      backend:
+        replicas: 0
+      {{- if $lk.values }}
+      {{- toYaml $lk.values | nindent 6 }}
+      {{- end }}
+    {{- end }}
+  rollbackLimit: 3
+  providerConfigRef:
+    name: {{ $lk.providerConfigRef.name }}
+    kind: {{ $lk.providerConfigRef.kind }}

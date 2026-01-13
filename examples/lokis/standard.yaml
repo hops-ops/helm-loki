@@ -1,0 +1,16 @@
+apiVersion: helm.hops.ops.com.ai/v1alpha1
+kind: Loki
+metadata:
+  name: loki
+  namespace: example-env
+spec:
+  clusterName: example-cluster
+  labels:
+    team: platform
+  namespace: loki
+  values:
+    loki:
+      commonConfig:
+        replication_factor: 1
+      limits_config:
+        retention_period: 168h
