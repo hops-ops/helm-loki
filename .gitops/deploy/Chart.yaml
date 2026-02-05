@@ -2,4 +2,4 @@ apiVersion: v2
 name: helm-loki
 version: 0.0.0
 description: GitOps packaging for the Loki Crossplane configuration
-appVersion: 6.51.0
+appVersion: 6.52.0
