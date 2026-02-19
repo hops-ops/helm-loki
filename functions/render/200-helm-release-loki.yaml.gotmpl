@@ -32,8 +32,6 @@ spec:
       {{- toYaml $lk.overrideAllValues | nindent 6 }}
     {{- else }}
     values:
-      fullnameOverride: loki
-      nameOverride: loki
       loki:
         auth_enabled: false
         commonConfig:
