@@ -33,6 +33,20 @@ _items = [
                     apiVersion = "helm.m.crossplane.io/v1beta1"
                     kind = "Release"
                     metadata.name = "test-loki"
+                    spec.forProvider.values = {
+                        loki = {
+                            auth_enabled = False
+                            commonConfig = {
+                                replication_factor = 1
+                            }
+                            storage = {
+                                type = "filesystem"
+                            }
+                        }
+                        singleBinary = {
+                            replicas = 1
+                        }
+                    }
                 }
             ]
         }

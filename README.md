@@ -9,7 +9,7 @@ for chart values, namespace, and release name, keeping the interface stable whil
 
 ## Features
 
-- **Minimal Helm interface**: values and overrideAllValues passed directly to Helm
+- **Useful defaults**: filesystem-backed single-binary Loki with OTLP labels enabled
 - **Predictable naming**: defaults to `<clusterName>-loki` in the `loki` namespace
 - **GitOps friendly**: ships a `.gitops/` deploy chart
 
